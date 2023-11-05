@@ -17,3 +17,4 @@ matplotlib
 seaborn
 PyPDF2
 streamlit
+pip==23.3.1
