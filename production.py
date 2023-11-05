@@ -92,15 +92,13 @@ def main():
 
     # Create a sidebar with a title and an "About Us" section
     with st.sidebar:
-        # st.markdown("---")
-        st.title("🧭 CareerCompass")  # Add a compass emoji to the title
+        st.title("🧭 CareerCompass")
         st.write("Welcome to CareerCompass, your personal career guide!")
         st.write("We help you find the most suitable job opportunities based on the similarity between your CV and job descriptions.")
         st.markdown("---")
 
         st.markdown("# 💀 Cheat Code")
 
-        # Create a button with a light bulb emoji to display team members
         if st.button("💡 Show Team Members"):
             st.markdown("👤 Mitheel Ramdaw")
             st.markdown("👤 Ryan Chitate")
@@ -111,16 +109,13 @@ def main():
 
         st.markdown("---")
 
-    # Use emojis for a playful touch
     st.title("📄 **Upload CVs**")
 
-    # Style the file uploader button with a background color
     uploaded_files = st.file_uploader(
         "Upload PDFs", type=["pdf"], accept_multiple_files=True, key="cv_upload")
 
     st.write("")
 
-    # Style the "Rank Jobs" button with a blue background
     if st.button("Rank Jobs", key="rank_button") and uploaded_files:
         uploaded_cvs = []
         uploaded_filenames = []
@@ -131,45 +126,44 @@ def main():
 
         st.write("")
 
-        # Calculate similarity and rank jobs
         ranked_jobs = rank_jobs(uploaded_cvs, uploaded_filenames)
 
-        # Create a horizontal rule for separation
-        # st.markdown("---")
-
-        # Style the CV subheaders with emojis and container layout
         for i, ranked_job in enumerate(ranked_jobs):
             st.markdown("---")
             st.write(f"📃 **CV: {ranked_job['cv_filename'].split('.pdf')[0]}**")
 
-            # Use emojis to style the job list
             for j, job in enumerate(ranked_job['job_scores']):
                 st.write(
                     f"👉 **Job {j + 1}**: {job['job_description']} (Similarity: {job['similarity_score']:.2f}%)")
             st.write("")
-            # st.markdown("---")
 
-            # Customize the line graph with a darker color and white text
-            fig, ax = plt.subplots()
+            plt.figure(figsize=(10, 6))
             job_numbers = [
                 f"Job {j + 1}" for j in range(len(ranked_job['job_scores']))]
             similarity_scores = [job['similarity_score']
                                  for job in ranked_job['job_scores']]
+            sns.set_style("darkgrid")
+            sns.set_palette(["c", "m", "r"])  # Cyan, Magenta, Red
 
-            # Set a stylish and modern dark theme
-            plt.style.use('seaborn-darkgrid')
+            ax = sns.barplot(x=job_numbers, y=similarity_scores)
+            ax.set(xlabel='Jobs', ylabel='Similarity Score',
+                   title=f'Similarity Scores for CV: {ranked_job["cv_filename"].split(".pdf")[0]}')
 
-            # Customize the line graph with a darker color
-            ax.plot(job_numbers, similarity_scores,
-                    marker='o', linestyle='-', color='#1f77b4')
-            ax.set_xlabel('Jobs', color='white')
-            ax.set_ylabel('Similarity Score', color='white')
-            ax.set_title(
-                f'Similarity Scores for CV: {ranked_job["cv_filename"].split(".pdf")[0]}', color='white')
+            ax.set_xticklabels(ax.get_xticklabels(), rotation=45)
+
+            # Set x-axis label color to white
+            ax.xaxis.label.set_color('white')
+            # Set y-axis label color to white
+            ax.yaxis.label.set_color('white')
+            ax.title.set_color('white')  # Set title color to white
+            # Set x-axis tick label color to white
             ax.tick_params(axis='x', colors='white')
+            # Set y-axis tick label color to white
             ax.tick_params(axis='y', colors='white')
+            fig = plt.gcf()
+            fig.set_facecolor('black')
 
-            st.pyplot(fig)
+            st.pyplot(plt)
             plt.close()
 
         st.markdown("---")
