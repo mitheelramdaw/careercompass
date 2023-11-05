@@ -64,4 +64,4 @@ jobs:
         with:
           app-name: 'CareerCompass'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_8FE890D8AD254E0A98DEDA19ABAB4C67 }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_ADD5F84F9D894FB1B8FAE5FFB3ED4B9A }}
