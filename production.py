@@ -5,6 +5,7 @@ from io import BytesIO
 import re
 import matplotlib.pyplot as plt
 import seaborn as sns
+import streamlit.components.v1 as components
 
 # Load the spaCy model
 nlp = spacy.load("en_core_web_md")
@@ -171,3 +172,8 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+    # Create a button to go to blocks.py
+if st.button("🔗 Go to blocks.py"):
+    # Use components.iframe to embed the content of blocks.py
+    components.iframe("blocks.py")
